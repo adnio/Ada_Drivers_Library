@@ -67,11 +67,17 @@ def git_clone(repo_url, branch, dst, recursive=False):
 #  - Destination directory
 #  - Recursive clone?
 #  - install command (if any)
-git_repos = [("https://github.com/AdaCore/bb-runtimes",
-              None,
-              "bb-runtimes",
+git_repos = [("https://github.com/AdaCore/embedded-runtimes",
+              "gpl2017_uninstall",
+              "embedded-runtimes",
               False,
-              ["python", ROOT_DIR + "/bb-runtimes/install.py", "--arch=arm-eabi"]),
+              ["python", ROOT_DIR + "/embedded-runtimes/install.py"]),
+
+             ("https://github.com/Fabien-Chouteau/zfp-nrf51",
+              None,
+              "examples/MicroBit/zfp-nrf51",
+              False,
+              None),
              ]
 
 parser = argparse.ArgumentParser('Download and install dependencies')
