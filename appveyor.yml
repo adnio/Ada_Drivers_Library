@@ -16,6 +16,9 @@ environment:
 cache:
   - C:\ADL_tools
 
+on_failure:
+  - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
+
 install:
 # Show current dir and its content
 - cmd: cd
@@ -36,15 +39,13 @@ install:
 # Show content of tool dir again so we can see if the download was ok
 - cmd: dir %TOOLS_DIR%
 
-- cmd: type %INSTALL_CONTROL_SCRIPT%
-- cmd: type $env:INSTALL_CONTROL_SCRIPT
-
 # Install the compilers
-- cmd: cmd /c start /wait $env:GNAT_NATIVE_INSTALLER -v --platform minimal --script %INSTALL_CONTROL_SCRIPT% InstallDir=C:\Install\native
-- cmd: cmd /c start /wait %GNAT_ARM_ELF_INSTALLER%  -v --platform minimal --script %INSTALL_CONTROL_SCRIPT% InstallDir=C:\Install\arm-elf
+- cmd: cmd /c start /wait %GNAT_NATIVE_INSTALLER% -v --script %INSTALL_CONTROL_SCRIPT% InstallDir=C:\Install\native
+- cmd: cmd /c start /wait %GNAT_ARM_ELF_INSTALLER%  -v --script %INSTALL_CONTROL_SCRIPT% InstallDir=C:\Install\arm-elf
 
 # Show content of install dir so we can see if install was ok
 - cmd: dir %INSTALL_DIR%
+- cmd: dir C:\Install\
 
 # Add compiler to the PATH
 - ps: $env:Path += ";" + $env:INSTALL_DIR +"\native\bin"
